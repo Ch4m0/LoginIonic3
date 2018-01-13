@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { User } from '../../models/user';
 import { RegisterPage } from '../register/register'; 
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -19,10 +19,13 @@ import { HomePage } from '../home/home';
   templateUrl: 'login.html',
 })
 export class LoginPage {
-	
+
 	user = {} as User;
 
-  constructor(private ofauth:AngularFireAuth, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(private ofauth:AngularFireAuth, 
+  	public navCtrl: NavController, 
+  	public navParams: NavParams,
+  	private toast: ToastController) {
   }
 
   ionViewDidLoad() {
@@ -42,11 +45,15 @@ export class LoginPage {
    
    	}
    	catch (e) {
+
    		console.log(e);
    		console.log(e.message);
    				var errorCode = e.code;
   		var errorMessage = e.message;
-  		alert(errorMessage);
+  		this.toast.create({
+  			message: errorMessage,
+  			duration: 3000
+  		}).present();
 
   		// if (errorCode === 'auth/argument-error') {
   		// 	// alert('Falta llenar un campo');
